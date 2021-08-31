@@ -2,7 +2,6 @@
 from datetime import timedelta
 from django.core import exceptions
 from django.db.models.fields import Field
-from django.utils import six
 from django.utils.translation import ugettext_lazy as _
 from django.utils.encoding import smart_text
 
@@ -53,7 +52,7 @@ class DurationField(Field):
         """
         if value is None:
             return None  # db NULL
-        if isinstance(value, six.integer_types):
+        if isinstance(value, int):
             value = timedelta(microseconds=value)
         value = abs(value)  # all durations are positive
 
@@ -67,7 +66,7 @@ class DurationField(Field):
         return self.get_db_prep_value(value, connection=connection)
 
     def value_to_string(self, obj):
-        value = self._get_val_from_obj(obj)
+        value = self.value_from_object(obj)
         return smart_text(value)
 
     def to_python(self, value):
@@ -85,7 +84,7 @@ class DurationField(Field):
         if isinstance(value, timedelta):
             return value
 
-        if isinstance(value, six.integer_types):
+        if isinstance(value, int):
             return timedelta(microseconds=value)
 
         # As of Django 1.10, it appears that during some aggregation operations
@@ -96,7 +95,7 @@ class DurationField(Field):
 
         # Try to parse the value
         str_val = smart_text(value)
-        if isinstance(str_val, six.string_types):
+        if isinstance(str_val, str):
             try:
                 return str_to_timedelta(str_val)
             except ValueError:

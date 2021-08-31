@@ -1,6 +1,5 @@
 from django.core.exceptions import ValidationError
 from django.test import TestCase
-from django.utils import six
 from .models import (
     TestModel,
     TestNullableModel,
@@ -116,16 +115,6 @@ class DurationFieldTests(TestCase):
             # Test with int
             model_test = TestModel()
             model_test.duration_field = self._delta_to_microseconds(td)
-            model_test.save()
-            model_test = TestModel.objects.get(pk=model_test.pk)
-            self.assertEqual(td, model_test.duration_field)
-
-    @unittest.skipIf(six.PY3, 'long not present in Python 3')
-    def testLongInPython2(self):
-        for td in self.test_tds:
-            # Test with long
-            model_test = TestModel()
-            model_test.duration_field = long(self._delta_to_microseconds(td))
             model_test.save()
             model_test = TestModel.objects.get(pk=model_test.pk)
             self.assertEqual(td, model_test.duration_field)

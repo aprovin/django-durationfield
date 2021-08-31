@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from django import VERSION
-from django.utils import formats, six
+from django.utils import formats
 from django.forms.widgets import TextInput
 from django.utils.safestring import mark_safe
 from django.utils.encoding import force_text
@@ -28,7 +28,7 @@ class DurationInput(TextInput):
 
         if value != '':
             # Only add the 'value' attribute if a value is non-empty.
-            if isinstance(value, six.integer_types):
+            if isinstance(value, int):
                 value = timedelta(microseconds=value)
 
             # Otherwise, we've got a timedelta already
