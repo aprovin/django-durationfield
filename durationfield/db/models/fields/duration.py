@@ -2,8 +2,8 @@
 from datetime import timedelta
 from django.core import exceptions
 from django.db.models.fields import Field
-from django.utils.translation import ugettext_lazy as _
-from django.utils.encoding import smart_text
+from django.utils.translation import gettext_lazy as _
+from django.utils.encoding import force_str
 
 from durationfield.utils.timestring import str_to_timedelta
 from durationfield.forms.fields import DurationField as FDurationField
@@ -67,7 +67,7 @@ class DurationField(Field):
 
     def value_to_string(self, obj):
         value = self.value_from_object(obj)
-        return smart_text(value)
+        return force_str(value)
 
     def to_python(self, value):
         """
@@ -94,7 +94,7 @@ class DurationField(Field):
             return timedelta(microseconds=float(value))
 
         # Try to parse the value
-        str_val = smart_text(value)
+        str_val = force_str(value)
         if isinstance(str_val, str):
             try:
                 return str_to_timedelta(str_val)
