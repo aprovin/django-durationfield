@@ -3,7 +3,7 @@ from django import VERSION
 from django.utils import formats
 from django.forms.widgets import TextInput
 from django.utils.safestring import mark_safe
-from django.utils.encoding import force_text
+from django.utils.encoding import force_str
 from datetime import timedelta
 
 # This is an attempt to resolve a RemovedInDjango19Warning raised when
@@ -33,5 +33,5 @@ class DurationInput(TextInput):
 
             # Otherwise, we've got a timedelta already
 
-            final_attrs['value'] = force_text(formats.localize_input(value))
+            final_attrs['value'] = force_str(formats.localize_input(value))
         return mark_safe('<input%s />' % flatatt(final_attrs))
